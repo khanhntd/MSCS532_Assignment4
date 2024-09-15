@@ -1,13 +1,18 @@
 import random
 
+class Task:
+  def __init__(self, name: str, priority: int) -> None:
+    self.priority = priority
+    self.name = name
+
 class MaxHeap:
   def __init__(self) -> None:
     self.heap = []
 
   # Time complexity: O(log n) (worst case is O(n) when resizie the array for appending the elements
   # https://stackoverflow.com/a/77296220)
-  def insert(self, priority: int) -> None:
-    self.heap.append(priority)
+  def insert(self, task: Task) -> None:
+    self.heap.append(task)
     self.heapifyUp(len(self.heap) - 1)
 
   # heapifyUp will compare the current elements with the parent node and swap it if the
@@ -16,7 +21,8 @@ class MaxHeap:
   def heapifyUp(self, currentIndex: int) -> None:
     while currentIndex > 0:
       parentIndex = (currentIndex - 1) // 2
-      if self.heap[currentIndex] > self.heap[parentIndex]:
+
+      if self.heap[currentIndex].priority > self.heap[parentIndex].priority:
         self.heap[currentIndex], self.heap[parentIndex] = self.heap[parentIndex], self.heap[currentIndex]
         currentIndex = parentIndex
       else:
@@ -45,22 +51,28 @@ class MaxHeap:
       leftNodeIndex = currentIndex * 2 + 1
       rightNodeIndex = currentIndex * 2 + 2
 
-      if leftNodeIndex < len(self.heap) and self.heap[leftNodeIndex] > self.heap[largestIndex]:
+      if leftNodeIndex < len(self.heap) and self.heap[leftNodeIndex].priority > self.heap[largestIndex].priority:
           largestIndex = leftNodeIndex
 
-      if rightNodeIndex < len(self.heap) and self.heap[rightNodeIndex] > self.heap[largestIndex]:
+      if rightNodeIndex < len(self.heap) and self.heap[rightNodeIndex].priority > self.heap[largestIndex].priority:
           largestIndex = rightNodeIndex
 
-      if self.heap[currentIndex] < self.heap[largestIndex]:
+      if self.heap[currentIndex].priority < self.heap[largestIndex].priority:
           self.heap[currentIndex], self.heap[largestIndex] = self.heap[largestIndex], self.heap[currentIndex]
           currentIndex = largestIndex
       else:
           break
 
+  def search(self, taskName:str) -> (int, Task):
+    for index, task in enumerate(self.heap):
+      if task.name == taskName:
+        return index, task
+    return (-1, None)
+
   # Time complexity: O(n)
   def printHeap(self) -> None:
-    for i in range(len(self.heap)):
-        print(self.heap[i], end=" ")
+    for task in self.heap:
+        print(task.name, " - priority", task.priority, end=",")
     print("\n")
 
 class PriorityQueue:
@@ -70,8 +82,8 @@ class PriorityQueue:
   # insert will add each element into a max heap by using the priority to determine
   # which element should be the root node (largest prirotiy)
   # Time complexity: O(log n)
-  def insert(self, priority: int):
-    self.priorityQueue.insert(priority)
+  def insert(self, task: Task):
+    self.priorityQueue.insert(task)
 
   # extractMax will extract the root node as the largest priority element,
   # replace it with the last element, and perform heapify down to
@@ -89,9 +101,13 @@ class PriorityQueue:
   # if the priority is higher than the current index's priority,
   # then perform a heapify up to maintain the heap structure and vice versa
   # Time complexity: O(log n)
-  def changePriority(self, index: int, priority: int) -> None:
-    oldPriority = self.priorityQueue.heap[index]
-    self.priorityQueue.heap[index] = priority
+  def changePriority(self, taskName: str, priority: int) -> None:
+    index, task = self.priorityQueue.search(taskName=taskName)
+    if index == -1:
+      return
+
+    oldPriority = task.priority
+    task.priority = priority
     if priority > oldPriority:
       self.priorityQueue.heapifyUp(index)
     else:
@@ -104,8 +120,9 @@ class PriorityQueue:
 
 def generatePriorityQueue(numberOfElements: int) -> PriorityQueue:
   pq = PriorityQueue()
-  for _ in range(0, numberOfElements):
-    pq.insert(random.randint(0, 200))
+  for index in range(0, numberOfElements):
+    taskName = "Task {}".format(index)
+    pq.insert(Task(taskName, random.randint(0, 200)))
 
   return pq
 
@@ -113,10 +130,14 @@ def runningSchedulingSystem():
   pq = generatePriorityQueue(numberOfElements=10)
   print("Priority Queue :")
   pq.printPriorityQueue()
-  print("Node with largest priority :" ,  pq.extractMax())
-  print("Node with 2nd largest priority :" ,  pq.extractMax())
-  pq.changePriority(1, 220)
+  print("Node with largest priority :" ,  pq.extractMax().name)
+  print("Node with 2nd largest priority :" ,  pq.extractMax().name)
+  print("Priority Queue before changing priority :")
+  pq.printPriorityQueue()
+  pq.changePriority("Task 1", 220)
+  pq.changePriority("Task 2", 210)
   print("Priority Queue after changing priority :")
   pq.printPriorityQueue()
-  print("After changing priority with node 1, node with largest priority:" ,  pq.extractMax())
+  print("After changing priority with node 1 and 2, node with largest priority:" ,  pq.extractMax().name)
+  print("After changing priority with node 1 2, node with 2nd largest priority:" ,  pq.extractMax().name)
   print("Is Priority Queue empty:", pq.isEmpty() )

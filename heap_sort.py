@@ -1,3 +1,4 @@
+from sort import mergeSort, quickSort
 import random
 
 # heapify will build the max-heap based on the current node
@@ -58,5 +59,7 @@ def runningSort() -> None:
   print("Before sorting")
   printArray(array)
   heapSort(array)
+  #mergeSort(array)
+  #quickSort(array)
   print("After sorting ")
   printArray(array)

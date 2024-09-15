@@ -45,7 +45,7 @@ class MaxHeap:
   # to replace the current node if the leaf node is larger.
   # Then, heapifyDown the leaf node operation if the current node is smaller
   # Time complexity: O(log n)
-  def heapifyDown(self, currentIndex: int):
+  def heapifyDown(self, currentIndex: int) -> None:
     while currentIndex * 2 + 1 < len(self.heap):
       largestIndex = currentIndex
       leftNodeIndex = currentIndex * 2 + 1
@@ -76,20 +76,20 @@ class MaxHeap:
     print("\n")
 
 class PriorityQueue:
-  def __init__(self):
+  def __init__(self) -> None:
     self.priorityQueue = MaxHeap()
 
   # insert will add each element into a max heap by using the priority to determine
   # which element should be the root node (largest prirotiy)
   # Time complexity: O(log n)
-  def insert(self, task: Task):
+  def insert(self, task: Task) -> None:
     self.priorityQueue.insert(task)
 
   # extractMax will extract the root node as the largest priority element,
   # replace it with the last element, and perform heapify down to
   # ensure max heap maintains its structure
   # Time complexity: O(log n)
-  def extractMax(self):
+  def extractMax(self) -> Task:
     return self.priorityQueue.remove()
 
   # isEmpty will check if the
@@ -115,7 +115,7 @@ class PriorityQueue:
 
   # printPriorityQueue will print all the elements in the heap
   # Time complexity: O(n)
-  def printPriorityQueue(self):
+  def printPriorityQueue(self) -> None:
     self.priorityQueue.printHeap()
 
 def generatePriorityQueue(numberOfElements: int) -> PriorityQueue:

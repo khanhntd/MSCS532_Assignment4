@@ -100,7 +100,7 @@ class PriorityQueue:
   # changePriority will change the priortiy of the current index
   # if the priority is higher than the current index's priority,
   # then perform a heapify up to maintain the heap structure and vice versa
-  # Time complexity: O(log n)
+  # Time complexity: O(log n) if not including search, if including search it would be O(n)
   def changePriority(self, taskName: str, priority: int) -> None:
     index, task = self.priorityQueue.search(taskName=taskName)
     if index == -1:

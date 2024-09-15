@@ -55,11 +55,11 @@ def printArray(array: list[int]) -> None:
     print("\n")
 
 def runningSort() -> None:
-  array = generateArray(numberOfElements=10, isSort=False,sortIncreasing=False)
+  array = generateArray(numberOfElements=100000, isSort=True,sortIncreasing=False)
   print("Before sorting")
   printArray(array)
   heapSort(array)
-  #mergeSort(array)
-  #quickSort(array)
+  #mergeSort(array, low = 0, high = len(array) - 1)
+  #quickSort(array, low = 0, high = len(array) - 1)
   print("After sorting ")
   printArray(array)

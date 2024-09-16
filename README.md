@@ -33,10 +33,12 @@ python3 -m cProfile main.py
 ![CPU profiler](./cpuProfiler.png)
 
 ### Algorithm
-- **Priority Queue:**
+- **Priority Queue:** is a type of queue that arranges elements based on their priority values and performs
+well when using max heap as an internal data structures with array (array peform betters than linked list if we need
+random accesss memory or when knowing the array's fix size before hand)
 
 ![Priority Queue](./priorityQueue.png)
 
-- **Heap Sort:**
+- **Heap Sort:** performs sorting with the same average complexity O(n log n) for all cases and better than Quick Sort for sorted cases.
 
 ![Heap Sort](./heapSort.png)
